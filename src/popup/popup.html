@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Copy-Pasta</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div id="container">
+    <h1>Copy-Pasta</h1>
+    <div id="status">
+      <span id="readingModeStatus">Reading Mode: <strong id="readingModeState">OFF</strong></span>
+    </div>
+    <div id="controls">
+      <button id="toggleReadingMode">Enable Reading Mode</button>
+      <button id="pauseSession" disabled>Pause</button>
+      <button id="resumeSession" disabled>Resume</button>
+      <button id="endSession" disabled>End & Export</button>
+    </div>
+    <div id="exportOptions" style="display:none;">
+      <label for="exportFormat">Export as:</label>
+      <select id="exportFormat">
+        <option value="txt">.txt</option>
+        <option value="md">.md</option>
+        <option value="docx">.docx</option>
+      </select>
+      <button id="exportBtn">Export</button>
+      <button id="discardBtn">Discard</button>
+    </div>
+    <div id="message"></div>
+  </div>
+  <script src="popup.js"></script>
+</body>
+</html>
