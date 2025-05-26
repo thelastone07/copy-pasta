@@ -1,3 +1,5 @@
 1.  could add support for adding docs in which copied text directly go. 
     why? so that users don't have to take the exported text and append somehwere else.
     kind of acts as a workspace.
+
+2. Docx didn't work. Stumbled across reference error somehow. Have to work on this later.
