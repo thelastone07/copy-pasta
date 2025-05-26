@@ -76,3 +76,86 @@ function disableReadingModeForTab(tabId) {
     chrome.tabs.sendMessage(tabId, {action: 'disableReadingMode'})
         .catch(console.warn);
 }
+
+
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === 'export' ) {
+    chrome.storage.local.get(['data'], function (result) {
+      chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+        chrome.scripting.executeScript({
+          target: { tabId: tabs[0].id },
+          func: message.format ==='txt' ? exportText : exportDocx,
+          args: [result.data || []]
+        });
+      });
+    });
+  } 
+});
+
+function exportText(data) {
+  let lines = [];
+  data.forEach(item => {
+    if (item.text) lines.push(item.text);
+    if (item.note) lines.push(item.note);
+  });
+
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');        
+  a.href = url;
+  a.download = 'copy_pasta.txt';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function exportDocx(data) {
+    console.log('Exporting to DOCX');
+    // const paragraphs = [];
+
+    // data.forEach(item => {
+    //     if (item.text) {
+    //         paragraphs.push(new Paragraph(item.text));
+    //     }
+    //     if (item.note) {
+    //         paragraphs.push(
+    //             new Paragraph({
+    //                 children: [new TextRun({ text: item.note, italics: true })],
+    //             })
+    //         );
+    //     }
+    //     if (item.url) {
+    //         paragraphs.push(
+    //             new Paragraph({
+    //                 children: [
+    //                     new ExternalHyperlink({
+    //                         children: [
+    //                             new TextRun({
+    //                                 text: item.url,
+    //                                 style: "Hyperlink"
+    //                             }),
+    //                         ],
+    //                         link: item.url,
+    //                     }),
+    //                 ],
+    //             })
+    //         );
+    //     }
+    // });
+
+    // const doc = new Document({
+    //     sections: [{ children: paragraphs }]
+    // });
+
+    // new Packer.toBlob(doc).then(blob => {
+    //     const url = URL.createObjectURL(blob);
+    //     const a = document.createElement('a');
+    //     a.href = url;
+    //     a.download = 'copy_pasta.docx';
+    //     document.body.appendChild(a);
+    //     a.click();
+    //     document.body.removeChild(a);
+    //     URL.revokeObjectURL(url);
+    // });
+}

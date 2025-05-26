@@ -88,7 +88,10 @@ endBtn.addEventListener('click', async () => {
 
 
 exportBtn.addEventListener('click', async () => {
-    console.log(exportFormat.value);
+    chrome.runtime.sendMessage({
+            action: 'export',
+            format : exportFormat.value
+    });
 });
 
 discardBtn.addEventListener('click', async ()=>{
