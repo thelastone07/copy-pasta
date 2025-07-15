@@ -3,3 +3,5 @@
     kind of acts as a workspace.
 
 2. Docx didn't work. Stumbled across reference error somehow. Have to work on this later.
+
+3. Add support for PDF
